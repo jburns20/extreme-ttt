@@ -13,7 +13,7 @@ public class GameBoard extends Tile {
 			}
 		} else {
 			for (int x=0; x<board.length; x++) {
-				board[x] = new GameBoard(level-1, dimension);
+				board[x] = new GameBoard(level-1);
 			}
 		}
 	}

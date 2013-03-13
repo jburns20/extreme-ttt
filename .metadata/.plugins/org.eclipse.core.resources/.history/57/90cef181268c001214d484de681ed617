@@ -5,15 +5,15 @@ public class GameBoard extends Tile {
 	
 	private Tile[] board;
 	
-	public GameBoard(int level, int dimension) {
-		board = new Tile[(int)Math.pow(dimension, 2)];
+	public GameBoard(int level) {
+		board = new Tile[(int)Math.pow(Rules.DIMENSION, 2)];
 		if (level==1) {
 			for (int x=0; x<board.length; x++) {
 				board[x] = new Tile();
 			}
 		} else {
 			for (int x=0; x<board.length; x++) {
-				board[x] = new GameBoard(level-1, dimension);
+				board[x] = new GameBoard(level-1);
 			}
 		}
 	}
