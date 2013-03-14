@@ -10,4 +10,7 @@ public class Location {
 	public int get(int level) {
 		return loc[level];
 	}
+	public int numValues() {
+		return loc.length;
+	}
 }

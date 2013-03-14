@@ -18,14 +18,15 @@ public class GameBoard extends Tile {
 		}
 	}
 	
-	public int getValue(Location loc) {
-		Tile next = this;
-		for (int i=0; i<Rules.LEVELS; i++) {
-			next = next.getSubtile(loc.get(i));
+	public Tile getValue(Location loc) {
+		Tile[] next = this.getTiles();
+		for (int i=0; i<loc.numValues()-2; i++) {
+			next = ((GameBoard)next[loc.get(i)]).getTiles();
 		}
+		return next[loc.get(loc.numValues()-1)];
 	}
 	
-	public Tile getSubtile(int i) {
-		return board[i];
+	public Tile[] getTiles() {
+		return board;
 	}
 }
