@@ -1,2 +1,0 @@
-INDEX VERSION 1.126+C:\Users\Jonathan Burns\Documents\GitHub\extreme-ttt\.metadata\.plugins\org.eclipse.jdt.core
-1697886153.index
