@@ -2,8 +2,15 @@ package general;
 
 import java.util.Arrays;
 
+/**
+ * References any location on the TicTacToe board, whether in the view or the model.
+ */
 public class Location {
-	int[] loc;
+	/**
+	 * A list of coordinates x (0<=x<=9) referencing the position of each sublevel
+	 * within the next outer level.
+	 */
+	int[] loc; 
 	
 	public Location(int[] locations) {
 		loc = locations;
@@ -16,7 +23,15 @@ public class Location {
 		return loc.length;
 	}
 	
+	/**
+	 * Returns a Location referencing the same location as this object that starts 
+	 * at the specified level.
+	 */
+	public Location sublocation(int start, int end) {
+		return new Location(Arrays.copyOfRange(loc, start, end));
+	}
+	
 	public Location sublocation(int start) {
-		return new Location(Arrays.copyOfRange(loc, start, loc.length));
+		return sublocation(start,loc.length);
 	}
 }
