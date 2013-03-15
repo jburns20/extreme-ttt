@@ -18,15 +18,12 @@ public class GameBoard extends Tile {
 		}
 	}
 	
-	public Tile getValue(Location loc) {
-		Tile[] next = this.getTiles();
-		for (int i=0; i<loc.numValues()-2; i++) {
-			next = ((GameBoard)next[loc.get(i)]).getTiles();
-		}
-		return next[loc.get(loc.numValues()-1)];
+	public int getValue(Location loc) {
+		return getValueRecursively(loc)[0].getValue();
 	}
 	
-	public Tile[] getTiles() {
-		return board;
+	public Tile[] getValueRecursively(Location loc) {
+		if (loc.numValues() == 1) {return new Tile[] {board[loc.get(0)]};}
+		return ((GameBoard)board[loc.get(0)]).getValueRecursively(loc.sublocation(1));
 	}
 }

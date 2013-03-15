@@ -1,5 +1,7 @@
 package general;
 
+import java.util.Arrays;
+
 public class Location {
 	int[] loc;
 	
@@ -12,5 +14,9 @@ public class Location {
 	}
 	public int numValues() {
 		return loc.length;
+	}
+	
+	public Location sublocation(int start) {
+		return new Location(Arrays.copyOfRange(loc, start, loc.length));
 	}
 }
