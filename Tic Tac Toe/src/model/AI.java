@@ -9,9 +9,18 @@ import general.Location;
 public interface AI {
 	
 	/**
-	 * 
+	 * Determines location of the next move within the board and returns it.
+	 * This is where the logic of the move takes place.
 	 */ 
-	Location selectMove(GameBoard board, Location playLocation);
+	Location getMove(GameBoard board, Location playLocation);
+	
+	/**
+	 * Returns victory message.
+	 */ 
 	String wittyCatchphrase();
+	
+	/**
+	 * Return difficulty level assigned by the AI writer.
+	 */ 
 	int getDifficultyLevel();
 }

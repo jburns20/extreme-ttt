@@ -4,8 +4,7 @@ import general.Location;
 
 public class RandomAI implements AI {
 
-	public Location selectMove(GameBoard board, Location playLocation) {
-		// TODO Auto-generated method stub
+	public Location getMove(GameBoard board, Location playLocation) {
 		return null;
 	}
 
