@@ -1,5 +1,5 @@
 package model;
 
-public class RandomAI implements Player {
+public class RandomAI implements AI {
 
 }
