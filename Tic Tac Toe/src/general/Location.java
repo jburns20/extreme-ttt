@@ -7,7 +7,7 @@ import java.util.Arrays;
  */
 public class Location {
 	/**
-	 * A list of coordinates x (0<=x<=9) referencing the position of each sublevel
+	 * A list of coordinates x (0 <= x < dimension*dimension) referencing the position of each sublevel
 	 * within the next outer level.
 	 */
 	int[] loc; 
