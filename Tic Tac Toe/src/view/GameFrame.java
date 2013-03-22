@@ -8,7 +8,7 @@ import javax.swing.*;
 public class GameFrame extends JFrame implements ActionListener, MouseListener {
 	private static final long serialVersionUID = -6399886456682347905L;
 	private GridPanel gridPanel;
-	private GameFrameDelegate delegate;
+	private GameViewDelegate delegate;
 	
 	public GameFrame(int levels, int dimensions, String[] playerNames) {
 		JPanel gamePanel = new JPanel(); // {
@@ -41,8 +41,8 @@ public class GameFrame extends JFrame implements ActionListener, MouseListener {
         this.setSize(500,500);
 	}
 
-	public GameFrameDelegate getDelegate() { return delegate; }
-	public void setDelegate(GameFrameDelegate delegate) { this.delegate = delegate; }
+	public GameViewDelegate getDelegate() { return delegate; }
+	public void setDelegate(GameViewDelegate delegate) { this.delegate = delegate; }
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() instanceof JButton && ((JButton)(e.getSource())).getText() == "Reset Scores") {

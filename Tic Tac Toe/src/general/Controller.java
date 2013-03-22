@@ -1,12 +1,12 @@
 package general;
 import view.GameFrame;
-import view.GameFrameDelegate;
+import view.GameViewDelegate;
 import model.AI;
 
 /**
  * The main controller that controls the game.
  */
-public class Controller implements GameFrameDelegate {
+public class Controller implements GameViewDelegate {
 	private AI[] players;
 	
 	public static void main(String[] args) {
