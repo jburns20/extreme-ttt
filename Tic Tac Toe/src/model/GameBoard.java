@@ -34,6 +34,14 @@ public class GameBoard extends Tile {
 	}
 	
 	/**
+	 * Checks if there is a win in this board and updates this board's value accordingly.
+	 * Returns if this board's value was changed.
+	 */
+	public boolean updateValue() {
+		return false;
+	}
+	
+	/**
 	 * Returns the value of the Tile in this GameBoard at the specified location.
 	 */
 	public int getValue(Location loc) {
