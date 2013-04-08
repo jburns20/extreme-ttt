@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.Graphics;
+import java.awt.GridLayout;
 
 import general.Location;
 import javax.swing.JPanel;
@@ -16,7 +17,13 @@ public class TilePanel extends JPanel {
 	
 	private Location loc;
 
-	public TilePanel(Location l) {
+	public TilePanel(Location l, int level, int dimensions, GameFrame listener) {
+		if (level > 0) {
+			this.setLayout(new GridLayout(dimensions, dimensions));
+			for (int i=0; i<dimensions*dimensions; i++) {
+				this.add(new TilePanel(new Location(l,i),level-1,dimensions,listener));
+			}
+		}
 		setOpaque(false);
 		loc = l;
 	}

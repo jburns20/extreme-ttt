@@ -17,9 +17,11 @@ public class GameFrame extends JFrame implements ActionListener, MouseListener {
 	 */
 	public GameFrame(int levels, int dimensions, String[] playerNames) {
 		JPanel gamePanel = new JPanel(); // {
-			gamePanel.setLayout(new GridLayout(2,1));
+			gamePanel.setLayout(null);
 			JPanel controlPanel = new JPanel(); // {
 				controlPanel.setLayout(new GridLayout(1,3));
+				controlPanel.setSize(gamePanel.getWidth(), 50);
+				controlPanel.setLocation(0, 0);
 				JPanel leftPlayerPanel = new JPanel();
 				leftPlayerPanel.add(new JLabel(playerNames[0]));
 				controlPanel.add(leftPlayerPanel);
@@ -37,7 +39,7 @@ public class GameFrame extends JFrame implements ActionListener, MouseListener {
 				controlPanel.add(controlButtonsPanel);
 		//  }
 			gamePanel.add(controlPanel);
-			TilePanel gridPanel = new TilePanel(new Location(new int[] {})); // {
+			TilePanel gridPanel = new TilePanel(new Location(new int[] {}), levels, dimensions, this); // {
 				
 		//  }
 			gamePanel.add(gridPanel);
