@@ -15,13 +15,16 @@ public class Location {
 	public Location(int[] locations) {
 		loc = locations;
 	}
+	public Location() {
+		loc = new int[0];
+	}
 	
 	/**
 	 * Constructs a new Location with the inner position added to the existing outer location.
 	 */
 	public Location(Location outerLoc, int innerPos) {
 		int[] newLoc = new int[outerLoc.numValues()+1];
-		for (int x = 0; x<numValues(); x++) {
+		for (int x = 0; x<outerLoc.numValues(); x++) {
 			newLoc[x] = outerLoc.get(x);
 		}
 		newLoc[newLoc.length-1] = innerPos;

@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 
@@ -24,7 +25,8 @@ public class TilePanel extends JPanel {
 				this.add(new TilePanel(new Location(l,i),level-1,dimensions,listener));
 			}
 		}
-		setOpaque(false);
+		//setOpaque(true);
+		this.setBackground(Color.GREEN);
 		loc = l;
 	}
 	

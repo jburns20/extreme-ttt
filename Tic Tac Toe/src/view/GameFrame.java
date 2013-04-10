@@ -17,11 +17,11 @@ public class GameFrame extends JFrame implements ActionListener, MouseListener {
 	 */
 	public GameFrame(int levels, int dimensions, String[] playerNames) {
 		JPanel gamePanel = new JPanel(); // {
-			gamePanel.setLayout(null);
+			gamePanel.setLayout(new BorderLayout());
 			JPanel controlPanel = new JPanel(); // {
 				controlPanel.setLayout(new GridLayout(1,3));
-				controlPanel.setSize(gamePanel.getWidth(), 50);
-				controlPanel.setLocation(0, 0);
+				//controlPanel.setSize(gamePanel.getWidth(), 50);
+				//controlPanel.setLocation(0, 0);
 				JPanel leftPlayerPanel = new JPanel();
 				leftPlayerPanel.add(new JLabel(playerNames[0]));
 				controlPanel.add(leftPlayerPanel);
@@ -38,13 +38,15 @@ public class GameFrame extends JFrame implements ActionListener, MouseListener {
 			//  }
 				controlPanel.add(controlButtonsPanel);
 		//  }
-			gamePanel.add(controlPanel);
+			gamePanel.add(controlPanel, BorderLayout.NORTH);
 			TilePanel gridPanel = new TilePanel(new Location(new int[] {}), levels, dimensions, this); // {
-				
+				//gridPanel.setSize(gamePanel.getWidth(), gamePanel.getHeight()-50);
+				//gridPanel.setLocation(0, 50);
 		//  }
-			gamePanel.add(gridPanel);
+			gamePanel.add(gridPanel, BorderLayout.SOUTH);
 	//  }
 		this.setContentPane(gamePanel);
+		gamePanel.revalidate();
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
         this.setSize(500,500);
