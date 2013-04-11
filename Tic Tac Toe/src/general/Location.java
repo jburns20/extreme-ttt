@@ -60,4 +60,13 @@ public class Location {
 	public int hashCode() {
 		return loc.hashCode();
 	}
+	public boolean equals(Location other) {
+		if (this.loc.length != other.loc.length) {return false;}
+		for (int index = 0; index < loc.length; index++) {
+			if (other.loc[index] != loc[index]) {
+				return false;
+			}
+		}
+		return true;
+	}
 }

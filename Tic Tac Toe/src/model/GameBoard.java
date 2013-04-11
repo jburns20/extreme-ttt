@@ -33,6 +33,19 @@ public class GameBoard extends Tile {
 		}
 	}
 	
+	public void setValue(Location loc, int player) {
+		Tile[] currentBoard = board;
+		for (int level = 0; level < loc.numValues(); level++) {
+			Tile temp = currentBoard[loc.get(level)];
+			if (temp instanceof GameBoard) {
+				currentBoard = ((GameBoard)temp).board;
+			} else {
+				temp.setValue(player);
+				break;
+			}
+		}
+	}
+	
 	/**
 	 * Checks if there is a win in this board and updates this board's value accordingly.
 	 * Returns if this board's value was changed.

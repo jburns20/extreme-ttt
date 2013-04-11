@@ -12,7 +12,7 @@ public class GameLogic {
 	private int levels;
 	private int dimensions;
 	private int[] scores;
-	private Location validMoveLocation;
+	private Location validMoveLocation; //sub-board that can be moved in
 	
 	/**
 	 * Creates a new GameLogic instance with the specified number of levels and dimensions.
@@ -24,6 +24,10 @@ public class GameLogic {
 		validMoveLocation = new Location(new int[] {4});
 	}
 	
+	public boolean isValidMove(Location loc) {
+		return false;
+	}
+	
 	/**
 	 * Makes a move on the board and updates the current player and valid player location. 
 	 * Checks for any locations that were updated as a result of this turn. 
@@ -31,11 +35,17 @@ public class GameLogic {
 	 */
 	public boolean takeTurn(Location loc) {
 		//iteratively update the boards affected by the move and add resulting changed locations to updatedLocations.
+		
+		
+		
+		if (mainBoard.updateValue()) {
+			if (getMainBoardState() == Tile.X) scores[0]++;
+			else if (getMainBoardState() == Tile.O) scores[1]++;
+		}
+		
 		if (currentPlayer==0) currentPlayer=1;
 		else currentPlayer=0;
 		
-		if (getMainBoardState() == Tile.X) scores[0]++;
-		else if (getMainBoardState() == Tile.O) scores[1]++; 
 		return (getMainBoardState() != Tile.EMPTY);
 	}
 	
