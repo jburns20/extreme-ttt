@@ -43,13 +43,16 @@ public class GameBoard extends Tile {
 		if (temp instanceof GameBoard) {
 			Map<Location, Integer> map = ((GameBoard)temp).setValue(fullLocation, relLoc.sublocation(1),player);
 			if (this.updateValue(player)) {
-				map.put(relLoc, player);
+				map.put(fullLocation.sublocation(0,fullLocation.numValues()-relLoc.numValues()), player);
 			}
 			return map;
 		} else {
 			temp.setValue(player);
 			Map<Location, Integer> map = new TreeMap<Location, Integer>();
 			map.put(fullLocation, player);
+			if (this.updateValue(player)) {
+				map.put(fullLocation.sublocation(0,fullLocation.numValues()-1), player);
+			}
 			return map;
 		}
 	}

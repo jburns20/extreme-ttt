@@ -28,6 +28,9 @@ public class GameLogic {
 		return validMoveLocation.equals(loc.sublocation(0,loc.numValues()-1));
 	}
 	
+	public boolean specialCaseWin(Location loc) {
+		
+	}
 	/**
 	 * Makes a move on the board and updates the current player and valid player location. 
 	 * Checks for any locations that were updated as a result of this turn. 
@@ -35,16 +38,20 @@ public class GameLogic {
 	 */
 	public boolean takeTurn(Location loc) {
 		if (isValidMove(loc)) {
-			updatedLocations.putAll(mainBoard.setValue(loc,currentPlayer));
-			if (getMainBoardState() != Tile.EMPTY) {
-				if (getMainBoardState() == Tile.X) scores[0]++;
-				else if (getMainBoardState() == Tile.O) scores[1]++;
+			if (specialCaseWin(loc)) {
+				
+			} else {
+				
+				updatedLocations.putAll(mainBoard.setValue(loc,loc,currentPlayer));
+				if (getMainBoardState() != Tile.EMPTY) {
+					if (getMainBoardState() == Tile.X) scores[0]++;
+					else if (getMainBoardState() == Tile.O) scores[1]++;
+				}
+				this.setValidMoveLocation(loc.sublocation(1));
 			}
 		
 			if (currentPlayer==0) currentPlayer=1;
 			else currentPlayer=0;
-			
-			this.setValidMoveLocation(loc.sublocation(1));
 			
 			return true;
 		}
