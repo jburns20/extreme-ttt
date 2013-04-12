@@ -27,8 +27,9 @@ public class Controller implements GameViewDelegate {
 	 * Starts a new match by creating a new game window.
 	 */
 	public void startNewMatch() {
-		GameFrame gameFrame = new GameFrame(2, 3, new String[] {"Player 1", "Player 2"});
+		GameFrame gameFrame = new GameFrame();
 		gameFrame.setDelegate(this);
+		gameFrame.initialize(2, 3, new String[] {"Player 1", "Player 2"});
 	}
 
 	/**
