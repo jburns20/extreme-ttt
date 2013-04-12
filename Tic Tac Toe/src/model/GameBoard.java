@@ -1,4 +1,7 @@
 package model;
+import java.util.Map;
+import java.util.TreeMap;
+
 import general.Location;
 
 /**
@@ -35,13 +38,19 @@ public class GameBoard extends Tile {
 		}
 	}
 	
-	public void setValue(Location loc, int player) {
-		Tile temp = board[loc.get(0)];
+	public Map<Location, Integer> setValue(Location fullLocation, Location relLoc, int player) {
+		Tile temp = board[relLoc.get(0)];
 		if (temp instanceof GameBoard) {
-			((GameBoard)temp).setValue(loc.sublocation(1),player);
-			this.updateValue(player);
+			Map<Location, Integer> map = ((GameBoard)temp).setValue(fullLocation, relLoc.sublocation(1),player);
+			if (this.updateValue(player)) {
+				map.put(relLoc, player);
+			}
+			return map;
 		} else {
 			temp.setValue(player);
+			Map<Location, Integer> map = new TreeMap<Location, Integer>();
+			map.put(fullLocation, player);
+			return map;
 		}
 	}
 	
@@ -50,23 +59,31 @@ public class GameBoard extends Tile {
 	 * Returns if this board's value was changed.
 	 */
 	public boolean updateValue(int player) {
+		boolean win = true; // must assume that a win took place, each for loop is designed to see if a win was NOT achieved
 		for (int index = 0; index < dimensions*dimensions; index+=(dimensions+1)) {
-			if (board[index].getValue() != player) {return false;}
+			if (board[index].getValue() != player) {win = false;}
 		}
+		if (win) {return win;}
+		win = true; 
 		for (int index = dimensions-1; index < dimensions*dimensions; index+=(dimensions-1)) {
-			if (board[index].getValue() != player) {return false;}
+			if (board[index].getValue() != player) {win = false;}
 		}
+		if (win) {return win;}
 		for (int start = 0; start<dimensions; start++) {
+			win = true;
 			for (int val = start; val < dimensions*dimensions; val+=dimensions) {
-				if (board[val].getValue() != player) {return false;}
+				if (board[val].getValue() != player) {win = false;}
 			}
+			if (win) {return win;}
 		}
 		for (int start = 0; start<dimensions*dimensions; start+=dimensions) {
+			win = true;
 			for (int val = start; val < start+dimensions; val++) {
-				if (board[val].getValue() != player) {return false;}
+				if (board[val].getValue() != player) {win = false;}
 			}
+			if (win) {return win;}
 		}
-		return true;
+		return win;
 	}
 	
 	/**

@@ -35,7 +35,7 @@ public class GameLogic {
 	 */
 	public boolean takeTurn(Location loc) {
 		if (isValidMove(loc)) {
-			mainBoard.setValue(loc,currentPlayer);
+			updatedLocations.putAll(mainBoard.setValue(loc,currentPlayer));
 			if (getMainBoardState() != Tile.EMPTY) {
 				if (getMainBoardState() == Tile.X) scores[0]++;
 				else if (getMainBoardState() == Tile.O) scores[1]++;
@@ -43,6 +43,9 @@ public class GameLogic {
 		
 			if (currentPlayer==0) currentPlayer=1;
 			else currentPlayer=0;
+			
+			this.setValidMoveLocation(loc.sublocation(1));
+			
 			return true;
 		}
 		
@@ -83,5 +86,9 @@ public class GameLogic {
 	 */
 	public void clearUpdates() {
 		updatedLocations = new HashMap<Location, Integer>();
+	}
+	
+	public void setValidMoveLocation(Location loc) {
+		validMoveLocation = loc;
 	}
 }
