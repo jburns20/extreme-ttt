@@ -39,14 +39,20 @@ public class GameBoard extends Tile {
 	}
 	
 	public Map<Location, Integer> setValue(Location fullLocation, Location relLoc, int player) {
-		Tile temp = board[relLoc.get(0)];
-		if (temp instanceof GameBoard) {
+		if (relLoc.numValues()>0 && board[relLoc.get(0)] instanceof GameBoard) {
+			Tile temp = board[relLoc.get(0)];
 			Map<Location, Integer> map = ((GameBoard)temp).setValue(fullLocation, relLoc.sublocation(1),player);
 			if (this.updateValue(player)) {
 				map.put(fullLocation.sublocation(0,fullLocation.numValues()-relLoc.numValues()), player);
 			}
 			return map;
 		} else {
+			Tile temp;
+			if (relLoc.numValues() > 0) {
+				temp = board[relLoc.get(0)];
+			} else {
+				temp = this;
+			}
 			temp.setValue(player);
 			Map<Location, Integer> map = new TreeMap<Location, Integer>();
 			map.put(fullLocation, player);
