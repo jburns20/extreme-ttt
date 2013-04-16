@@ -44,7 +44,8 @@ public class GameFrame extends JFrame implements ActionListener, MouseListener {
 				controlPanel.add(rightPlayerPanel);
 			//  }
 				gamePanel.add(controlPanel, BorderLayout.NORTH);
-				TilePanel gridPanel = new TilePanel(new Location(new int[] {}), levels, dimensions, this);
+				//TilePanel gridPanel = new TilePanel(new Location(new int[] {}), levels, dimensions, this);
+				EntireGridPanel gridPanel = new EntireGridPanel(levels, dimensions);
 				gamePanel.add(gridPanel, BorderLayout.CENTER);
 		//gamePanel.revalidate();
 		this.setSize(500,500);
