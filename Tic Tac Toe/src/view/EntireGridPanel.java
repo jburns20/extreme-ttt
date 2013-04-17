@@ -31,8 +31,8 @@ public class EntireGridPanel extends JPanel {
 		int r=0, c=0;
 		for (int lvl = level; lvl < levels; lvl++) {
 			System.out.println(lvl);
-			c += Math.pow(dimensions, lvl)*(loc.get(levels-lvl-1)%dimensions);
-			r += Math.pow(dimensions, lvl)*(loc.get(levels-lvl-1)/dimensions);
+			c += Math.pow(dimensions, lvl-level)*(loc.get(levels-lvl-1)%dimensions);
+			r += Math.pow(dimensions, lvl-level)*(loc.get(levels-lvl-1)/dimensions);
 		}
 		values[level][r][c] = value;
 	}
