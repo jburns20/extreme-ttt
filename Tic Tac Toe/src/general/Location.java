@@ -69,4 +69,17 @@ public class Location {
 		}
 		return true;
 	}
+	
+	/**
+	 * Converts this location to a set of three integers: level, row, and column.
+	 */
+	public int[] toLRC(int levels, int dimensions) {
+		int level = levels-this.numValues();
+		int r=0, c=0;
+		for (int lvl = level; lvl < levels; lvl++) {
+			c += Math.pow(dimensions, lvl-level)*(this.get(levels-lvl-1)%dimensions);
+			r += Math.pow(dimensions, lvl-level)*(this.get(levels-lvl-1)/dimensions);
+		}
+		return new int[] {level, r, c};
+	}
 }

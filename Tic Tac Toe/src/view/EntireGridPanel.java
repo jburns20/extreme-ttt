@@ -12,35 +12,49 @@ public class EntireGridPanel extends JPanel {
 	public static final int EMPTY = 0;
 	public static final int CAT = -1;
 	
-	private int levels;
-	private int dimensions;
 	private int[][][] values; //level, row, column
+	private int validLocationLevel;
+	private int validLocationRow;
+	private int validLocationCol;
 	
 	public EntireGridPanel(int levels, int dimensions) { //level 0 is smallest
-		this.levels=levels;
-		this.dimensions=dimensions;
 		values = new int[levels+1][][];
 		for (int lvl=0; lvl<=levels; lvl++) {
 			values[lvl] = new int[(int)Math.pow(dimensions, levels-lvl)][(int)Math.pow(dimensions, levels-lvl)];
 		}
-		//this.setValue(new Location(new int[] {4,3}), TilePanel.X);
+		this.setValue(new Location(new int[] {4,3}), X);
 	}
 	
 	public void setValue(Location loc, int value) {
-		int level = levels-loc.numValues();
-		int r=0, c=0;
-		for (int lvl = level; lvl < levels; lvl++) {
-			System.out.println(lvl);
-			c += Math.pow(dimensions, lvl-level)*(loc.get(levels-lvl-1)%dimensions);
-			r += Math.pow(dimensions, lvl-level)*(loc.get(levels-lvl-1)/dimensions);
-		}
-		values[level][r][c] = value;
+		int[] LRC = loc.toLRC(GameFrame.levels, GameFrame.dimensions);
+		values[LRC[0]][LRC[1]][LRC[2]] = value;
+	}
+	
+	public void setValidLocation(Location loc) {
+		int[] LRC = loc.toLRC(GameFrame.levels, GameFrame.dimensions);
+		validLocationLevel = LRC[0];
+		validLocationRow = LRC[1];
+		validLocationCol = LRC[2];
 	}
 	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		for (int lvl = 0; lvl <= levels; lvl++) {
-			int thisLevelDimensions = (int)Math.pow(dimensions, levels-lvl);
+		
+		//draw the valid location
+		double width = (double)this.getWidth();
+		double height = (double)this.getHeight();
+		for (int i=0; i<validLocationLevel; i++) {
+			width /= GameFrame.dimensions;
+			height /= GameFrame.dimensions;
+		}
+		int x = (int)(width*validLocationCol);
+		int y = (int)(height*validLocationRow);
+		g.setColor(Color.YELLOW);
+		g.fillRect(x, y, (int)width, (int)height);
+		
+		//draw the values in the grid
+		for (int lvl = 0; lvl <= GameFrame.levels; lvl++) {
+			int thisLevelDimensions = (int)Math.pow(GameFrame.dimensions, GameFrame.levels-lvl);
 			double realWidth = this.getWidth()/(double)thisLevelDimensions;
 			double realHeight = this.getHeight()/(double)thisLevelDimensions;
 			double leftoverWidth = 0, leftoverHeight=0;
