@@ -16,7 +16,7 @@ public class Tile {
 		value = EMPTY;
 	}
 	
-	public boolean getValue() {
+	public int getValue() {
 		return value;
 	}
 	
