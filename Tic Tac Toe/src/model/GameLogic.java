@@ -25,7 +25,7 @@ public class GameLogic {
 	}
 	
 	public boolean isValidMove(Location loc) {
-		return validMoveLocation.equals(loc.sublocation(0,loc.numValues()-1));
+		return validMoveLocation.equals(loc.sublocation(0,loc.numValues()-1)) && mainBoard.getValue(loc) == Tile.EMPTY;
 	}
 	
 	public boolean specialCaseWin() {
