@@ -42,7 +42,7 @@ public class GameBoard extends Tile {
 		if (relLoc.numValues()>0 && board[relLoc.get(0)] instanceof GameBoard) {
 			Tile temp = board[relLoc.get(0)];
 			Map<Location, Integer> map = ((GameBoard)temp).setValue(fullLocation, relLoc.sublocation(1),player);
-			if (this.updateValue(player)) {
+			if (this.updateValue(player)>0) {
 				map.put(fullLocation.sublocation(0,fullLocation.numValues()-relLoc.numValues()), player);
 			}
 			return map;
@@ -56,7 +56,7 @@ public class GameBoard extends Tile {
 			temp.setValue(player);
 			Map<Location, Integer> map = new HashMap<Location, Integer>();
 			map.put(fullLocation, player);
-			if (this.updateValue(player)) {
+			if (this.updateValue(player) > 1) {
 				map.put(fullLocation.sublocation(0,fullLocation.numValues()-1), player);
 				this.setValue(player);
 			}
@@ -68,33 +68,34 @@ public class GameBoard extends Tile {
 	 * Checks if there is a win in this board and updates this board's value accordingly.
 	 * Returns if this board's value was changed.
 	 */
-	public boolean updateValue(int player) {
-		if (this.getValue() != Tile.EMPTY) {return false;}
+	public int updateValue(int player) {
+		if (this.getValue() != Tile.EMPTY) {return this.getValue();}
 		boolean win = true; // must assume that a win took place, each for loop is designed to see if a win was NOT achieved
 		for (int index = 0; index < dimensions*dimensions; index+=(dimensions+1)) {
 			if (board[index].getValue() != player) {win = false;}
 		}
-		if (win) {return win;}
+		if (win) {return player;}
 		win = true; 
 		for (int index = dimensions-1; index < dimensions*dimensions; index+=(dimensions-1)) {
 			if (board[index].getValue() != player) {win = false;}
 		}
-		if (win) {return win;}
+		if (win) {return player;}
 		for (int start = 0; start<dimensions; start++) {
 			win = true;
 			for (int val = start; val < dimensions*dimensions; val+=dimensions) {
 				if (board[val].getValue() != player) {win = false;}
 			}
-			if (win) {return win;}
+			if (win) {return player;}
 		}
 		for (int start = 0; start<dimensions*dimensions; start+=dimensions) {
 			win = true;
 			for (int val = start; val < start+dimensions; val++) {
 				if (board[val].getValue() != player) {win = false;}
 			}
-			if (win) {return win;}
+			if (win) {return player;}
 		}
-		return win;
+		if (this.isFull()) {return Tile.CAT;}
+		return Tile.EMPTY;
 	}
 	
 	/**
@@ -107,5 +108,12 @@ public class GameBoard extends Tile {
 	private Tile[] getValueRecursively(Location loc) {
 		if (loc.numValues() == 1) {return new Tile[] {board[loc.get(0)]};}
 		return ((GameBoard)board[loc.get(0)]).getValueRecursively(loc.sublocation(1));
+	}
+	
+	public boolean isFull() {
+		for (Tile x:board) {
+			if (x.getValue() == Tile.EMPTY) {return false;}
+		}
+		return true;
 	}
 }
