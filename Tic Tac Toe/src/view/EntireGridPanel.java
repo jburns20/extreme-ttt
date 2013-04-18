@@ -43,7 +43,7 @@ public class EntireGridPanel extends JPanel {
 		//draw the valid location
 		double width = (double)this.getWidth();
 		double height = (double)this.getHeight();
-		for (int i=0; i<GameFrame.dimensions-1; i++) {
+		for (int i=0; i<GameFrame.levels-1; i++) {
 			width /= GameFrame.dimensions;
 			height /= GameFrame.dimensions;
 		}
