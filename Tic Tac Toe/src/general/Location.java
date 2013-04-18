@@ -70,6 +70,15 @@ public class Location {
 		return true;
 	}
 	
+	public String toString() {
+		if (loc.length==0) return "[]";
+		String s="[";
+		for (int i=0; i<loc.length; i++) {
+			s += loc[i] + "->";
+		}
+		return s.substring(0, s.length()-2) + "]";
+	}
+	
 	/**
 	 * Converts this location to a set of three integers: level, row, and column.
 	 */

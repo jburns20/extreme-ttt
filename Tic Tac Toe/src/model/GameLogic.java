@@ -20,8 +20,10 @@ public class GameLogic {
 	public GameLogic(int l, int d) {
 		levels = l;
 		dimensions = d;
+		currentPlayer = 1;
 		mainBoard = new GameBoard(l,d);
-		validMoveLocation = new Location(new int[] {4});
+		validMoveLocation = new Location(new int[] {4,4});
+		updatedLocations = new HashMap<Location, Integer>();
 	}
 	
 	public boolean isValidMove(Location loc) {
@@ -46,8 +48,8 @@ public class GameLogic {
 			updatedLocations.putAll(mainBoard.setValue(loc,loc,currentPlayer));
 			this.setValidMoveLocation(loc.sublocation(1));
 		
-			if (currentPlayer==0) currentPlayer=1;
-			else currentPlayer=0;
+			if (currentPlayer==1) currentPlayer=2;
+			else currentPlayer=1;
 			
 			if (specialCaseWin()) {
 				mainBoard.setValue(currentPlayer);
@@ -70,6 +72,10 @@ public class GameLogic {
 	 */
 	public int getMainBoardState() {
 		return mainBoard.getValue();
+	}
+	
+	public Location getValidMoveLocation() {
+		return validMoveLocation;
 	}
 	
 	/**

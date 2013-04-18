@@ -13,7 +13,6 @@ public class EntireGridPanel extends JPanel {
 	public static final int CAT = -1;
 	
 	private int[][][] values; //level, row, column
-	private int validLocationLevel;
 	private int validLocationRow;
 	private int validLocationCol;
 	
@@ -22,17 +21,18 @@ public class EntireGridPanel extends JPanel {
 		for (int lvl=0; lvl<=levels; lvl++) {
 			values[lvl] = new int[(int)Math.pow(dimensions, levels-lvl)][(int)Math.pow(dimensions, levels-lvl)];
 		}
-		this.setValue(new Location(new int[] {4,3}), X);
 	}
 	
 	public void setValue(Location loc, int value) {
 		int[] LRC = loc.toLRC(GameFrame.levels, GameFrame.dimensions);
 		values[LRC[0]][LRC[1]][LRC[2]] = value;
+		System.out.println("valid location: " + LRC[0] + ", " + LRC[1] + ", " + LRC[2]);
+		System.out.println(value);
+		repaint();
 	}
 	
 	public void setValidLocation(Location loc) {
 		int[] LRC = loc.toLRC(GameFrame.levels, GameFrame.dimensions);
-		validLocationLevel = LRC[0];
 		validLocationRow = LRC[1];
 		validLocationCol = LRC[2];
 	}
@@ -43,7 +43,7 @@ public class EntireGridPanel extends JPanel {
 		//draw the valid location
 		double width = (double)this.getWidth();
 		double height = (double)this.getHeight();
-		for (int i=0; i<validLocationLevel; i++) {
+		for (int i=0; i<GameFrame.dimensions-1; i++) {
 			width /= GameFrame.dimensions;
 			height /= GameFrame.dimensions;
 		}
@@ -80,8 +80,10 @@ public class EntireGridPanel extends JPanel {
 	private void drawValue(Graphics g, int x, int y, int width, int height, int value) {
 		if (value == X) {
 			g.setColor(new Color(200,0,0,64));
-		} else {
+		} else if (value == O) {
 			g.setColor(new Color(0, 200, 0, 64));
+		} else {
+			g.setColor(new Color(255,255,255,64));
 		}
 		g.fillOval(x, y, width, height);
 	}

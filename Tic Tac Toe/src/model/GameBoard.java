@@ -1,6 +1,6 @@
 package model;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 import general.Location;
 
@@ -54,10 +54,11 @@ public class GameBoard extends Tile {
 				temp = this;
 			}
 			temp.setValue(player);
-			Map<Location, Integer> map = new TreeMap<Location, Integer>();
+			Map<Location, Integer> map = new HashMap<Location, Integer>();
 			map.put(fullLocation, player);
 			if (this.updateValue(player)) {
 				map.put(fullLocation.sublocation(0,fullLocation.numValues()-1), player);
+				this.setValue(player);
 			}
 			return map;
 		}
@@ -68,6 +69,7 @@ public class GameBoard extends Tile {
 	 * Returns if this board's value was changed.
 	 */
 	public boolean updateValue(int player) {
+		if (this.getValue() != Tile.EMPTY) {return false;}
 		boolean win = true; // must assume that a win took place, each for loop is designed to see if a win was NOT achieved
 		for (int index = 0; index < dimensions*dimensions; index+=(dimensions+1)) {
 			if (board[index].getValue() != player) {win = false;}
