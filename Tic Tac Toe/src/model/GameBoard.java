@@ -56,9 +56,10 @@ public class GameBoard extends Tile {
 			temp.setValue(player);
 			Map<Location, Integer> map = new HashMap<Location, Integer>();
 			map.put(fullLocation, player);
-			if (this.updateValue(player) > 1) {
-				map.put(fullLocation.sublocation(0,fullLocation.numValues()-1), player);
-				this.setValue(player);
+			int newval = this.updateValue(player);
+			if (newval > 1) {
+				map.put(fullLocation.sublocation(0,fullLocation.numValues()-1), newval);
+				this.setValue(newval);
 			}
 			return map;
 		}

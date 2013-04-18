@@ -10,7 +10,7 @@ public class EntireGridPanel extends JPanel {
 	public static final int X = 1;
 	public static final int O = 2;
 	public static final int EMPTY = 0;
-	public static final int CAT = -1;
+	public static final int CAT = 3;
 	
 	private int[][][] values; //level, row, column
 	private int validLocationRow;
@@ -82,6 +82,8 @@ public class EntireGridPanel extends JPanel {
 			g.setColor(new Color(200,0,0,64));
 		} else if (value == O) {
 			g.setColor(new Color(0, 200, 0, 64));
+		} else if (value == CAT) {
+			g.setColor(new Color(0, 0, 200, 64));
 		} else {
 			g.setColor(new Color(255,255,255,64));
 		}
