@@ -21,6 +21,8 @@ public class EntireGridPanel extends JPanel {
 		for (int lvl=0; lvl<=levels; lvl++) {
 			values[lvl] = new int[(int)Math.pow(dimensions, levels-lvl)][(int)Math.pow(dimensions, levels-lvl)];
 		}
+		this.setOpaque(true);
+		this.setBackground(Color.WHITE);
 	}
 	
 	public void setValue(Location loc, int value) {
@@ -37,20 +39,9 @@ public class EntireGridPanel extends JPanel {
 		validLocationCol = LRC[2];
 	}
 	
-	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		
-		//draw the valid location
-		double width = (double)this.getWidth();
-		double height = (double)this.getHeight();
-		for (int i=0; i<GameFrame.levels-1; i++) {
-			width /= GameFrame.dimensions;
-			height /= GameFrame.dimensions;
-		}
-		int x = (int)(width*validLocationCol);
-		int y = (int)(height*validLocationRow);
-		g.setColor(Color.YELLOW);
-		g.fillRect(x, y, (int)width, (int)height);
+	public void paintComponent(Graphics gg) {
+		super.paintComponent(gg);
+		Graphics2D g = (Graphics2D)gg;
 		
 		//draw the values in the grid
 		for (int lvl = 0; lvl <= GameFrame.levels; lvl++) {
@@ -62,16 +53,25 @@ public class EntireGridPanel extends JPanel {
 				int pixelWidth = (int)realWidth;
 				leftoverWidth += realWidth-pixelWidth;
 				if (leftoverWidth > 1) {
-					pixelWidth++;
-					leftoverWidth--;
+					//pixelWidth++;
+					//leftoverWidth--;
 				}
 				int pixelHeight = (int)realHeight;
 				leftoverHeight += realHeight-pixelHeight;
 				if (leftoverHeight > 1) {
-					pixelHeight++;
-					leftoverHeight--;
+					//pixelHeight++;
+					//leftoverHeight--;
 				}
 				drawValue(g, (int)(realWidth*c), (int)(realHeight*r), pixelWidth, pixelHeight, values[lvl][r][c]);
+				if (lvl == 1) {
+					if (validLocationCol != c || validLocationRow != r) {
+						g.setColor(new Color(0,0,0,30));
+						g.fillRect((int)(realWidth*c), (int)(realHeight*r), pixelWidth, pixelHeight);
+					}
+				}
+				g.setColor(Color.BLACK);
+				g.setStroke(new BasicStroke(3*lvl+2));
+				g.drawRect((int)(realWidth*c)+1, (int)(realHeight*r)+1, pixelWidth-1, pixelHeight-1);
 			}
 		}
 		
@@ -85,7 +85,7 @@ public class EntireGridPanel extends JPanel {
 		} else if (value == CAT) {
 			g.setColor(new Color(0, 0, 200, 64));
 		} else {
-			g.setColor(new Color(255,255,255,64));
+			return;
 		}
 		g.fillOval(x, y, width, height);
 	}
