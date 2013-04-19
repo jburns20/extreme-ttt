@@ -3,6 +3,8 @@ package view;
 import general.Location;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+
 import javax.swing.*;
 
 public class EntireGridPanel extends JPanel {
@@ -80,6 +82,7 @@ public class EntireGridPanel extends JPanel {
 	private void drawValue(Graphics g, int x, int y, int width, int height, int value) {
 		if (value == X) {
 			g.setColor(new Color(200,0,0,64));
+			//g.drawImage(new ImageIcon(width, height, ), x, y, width, height, null);
 		} else if (value == O) {
 			g.setColor(new Color(0, 200, 0, 64));
 		} else if (value == CAT) {

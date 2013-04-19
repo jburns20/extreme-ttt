@@ -23,9 +23,9 @@ public class GameLogic {
 		currentPlayer = 1;
 		mainBoard = new GameBoard(l,d);
 		int[] locArray = new int[levels-1];
-		int index = (int)((dimensions+1)*((int)Math.pow(dimensions, levels-1)/2));
+		int index = (int)((dimensions+1)*(dimensions/2));
 		for (int x = 0; x < locArray.length; x++) {
-			System.out.println(x+", "+index);
+			System.out.println(index);
 			locArray[x] = index;
 		}
 		validMoveLocation = new Location(locArray);
