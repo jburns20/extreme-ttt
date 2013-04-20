@@ -1,5 +1,7 @@
 package model;
 
+import java.util.ArrayList;
+
 import general.Location;
 
 /**
@@ -8,7 +10,14 @@ import general.Location;
 public class RandomAI implements AI {
 
 	public Location getMove(GameBoard board, Location playLocation) {
-		return new Location(playLocation,(int)Math.random()*board.dimensions*board.dimensions);
+		ArrayList<Location> possibleMoves = new ArrayList<Location>();
+		for (int x = 0; x < board.dimensions*board.dimensions; x++) {
+			Location loc = new Location(playLocation,x);
+			if (board.getValue(loc) == Tile.EMPTY) {
+				possibleMoves.add(loc);
+			}
+		}
+		return possibleMoves.get((int)(Math.random()*possibleMoves.size()));
 	}
 
 }
