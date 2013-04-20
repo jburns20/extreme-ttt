@@ -39,37 +39,30 @@ public class GameBoard extends Tile {
 	}
 	
 	public Map<Location, Integer> setValue(Location fullLocation, Location relLoc, int player) {
-		if (relLoc.numValues()>0 && board[relLoc.get(0)] instanceof GameBoard) {
-			Tile temp = board[relLoc.get(0)];
-			Map<Location, Integer> map = ((GameBoard)temp).setValue(fullLocation, relLoc.sublocation(1),player);
-			if (this.updateValue(player)>0) {
-				map.put(fullLocation.sublocation(0,fullLocation.numValues()-relLoc.numValues()), player);
-			}
-			return map;
-		} else {
-			Tile temp;
-			if (relLoc.numValues() > 0) {
-				temp = board[relLoc.get(0)];
-			} else {
-				temp = this;
-			}
-			temp.setValue(player);
-			Map<Location, Integer> map = new HashMap<Location, Integer>();
+		Map<Location, Integer> map;
+		if (relLoc.numValues() == 1) {
+			map = new HashMap<Location, Integer>();
+			board[relLoc.get(0)].setValue(player);
 			map.put(fullLocation, player);
-			int newval = this.updateValue(player);
-			if (newval > 0) {
-				map.put(fullLocation.sublocation(0,fullLocation.numValues()-1), newval);
-				this.setValue(newval);
-			}
-			return map;
+			System.out.println("1 "+fullLocation+" "+player);
+		} else {
+			map = ((GameBoard)board[relLoc.get(0)]).setValue(fullLocation,relLoc.sublocation(1),player);
 		}
+		int newval = this.updateValue(player);
+		if (newval > 0) {
+			this.setValue(newval);
+			map.put(fullLocation.sublocation(0,fullLocation.numValues()-relLoc.numValues()), newval);
+			System.out.println("2 "+fullLocation.sublocation(0,fullLocation.numValues()-relLoc.numValues())+" "+player);
+		}
+		return map;
 	}
 	
 	/**
 	 * Checks if there is a win in this board and updates this board's value accordingly.
-	 * Returns if this board's value was changed.
+	 * Returns this board's new value.
 	 */
-	public int updateValue(int player) {
+	private int updateValue(int player) {
+		System.out.println("VALUE: "+this.getValue());
 		if (this.getValue() != Tile.EMPTY) {return this.getValue();}
 		boolean win = true; // must assume that a win took place, each for loop is designed to see if a win was NOT achieved
 		for (int index = 0; index < dimensions*dimensions; index+=(dimensions+1)) {
@@ -77,7 +70,7 @@ public class GameBoard extends Tile {
 		}
 		if (win) {return player;}
 		win = true; 
-		for (int index = dimensions-1; index < dimensions*dimensions; index+=(dimensions-1)) {
+		for (int index = dimensions-1; index < dimensions*dimensions-1; index+=(dimensions-1)) {
 			if (board[index].getValue() != player) {win = false;}
 		}
 		if (win) {return player;}

@@ -13,14 +13,4 @@ public interface AI {
 	 * This is where the logic of the move takes place.
 	 */ 
 	Location getMove(GameBoard board, Location playLocation);
-	
-	/**
-	 * Returns victory message.
-	 */ 
-	String wittyCatchphrase();
-	
-	/**
-	 * Return difficulty level assigned by the AI writer.
-	 */ 
-	int getDifficultyLevel();
 }

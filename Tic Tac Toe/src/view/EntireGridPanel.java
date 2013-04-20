@@ -3,7 +3,6 @@ package view;
 import general.Location;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 import javax.swing.*;
 
@@ -30,8 +29,6 @@ public class EntireGridPanel extends JPanel {
 	public void setValue(Location loc, int value) {
 		int[] LRC = loc.toLRC(GameFrame.levels, GameFrame.dimensions);
 		values[LRC[0]][LRC[1]][LRC[2]] = value;
-		System.out.println("valid location: " + LRC[0] + ", " + LRC[1] + ", " + LRC[2]);
-		System.out.println(value);
 		repaint();
 	}
 	
@@ -64,7 +61,9 @@ public class EntireGridPanel extends JPanel {
 					//pixelHeight++;
 					//leftoverHeight--;
 				}
-				drawValue(g, (int)(realWidth*c), (int)(realHeight*r), pixelWidth, pixelHeight, values[lvl][r][c]);
+				if (lvl != GameFrame.levels) {
+					drawValue(g, (int)(realWidth*c), (int)(realHeight*r), pixelWidth, pixelHeight, values[lvl][r][c]);
+				}
 				if (lvl == 1) {
 					if (validLocationCol != c || validLocationRow != r) {
 						g.setColor(new Color(0,0,0,30));
@@ -81,15 +80,16 @@ public class EntireGridPanel extends JPanel {
 	
 	private void drawValue(Graphics g, int x, int y, int width, int height, int value) {
 		if (value == X) {
-			g.setColor(new Color(200,0,0,64));
-			//g.drawImage(new ImageIcon(width, height, ), x, y, width, height, null);
+			//g.setColor(new Color(200,0,0,64));
+			g.drawImage(new ImageIcon("x.png").getImage(), x, y, width, height, null);
 		} else if (value == O) {
-			g.setColor(new Color(0, 200, 0, 64));
+			//g.setColor(new Color(0, 200, 0, 64));
+			g.drawImage(new ImageIcon("o.png").getImage(), x, y, width, height, null);
 		} else if (value == CAT) {
-			g.setColor(new Color(0, 0, 200, 64));
+			//g.setColor(new Color(0, 0, 200, 64));
 		} else {
 			return;
 		}
-		g.fillOval(x, y, width, height);
+		//g.fillOval(x, y, width, height);
 	}
 }

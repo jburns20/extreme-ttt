@@ -22,15 +22,13 @@ public class GameLogic {
 		dimensions = d;
 		currentPlayer = 1;
 		mainBoard = new GameBoard(l,d);
-		int[] locArray = new int[levels-1];
-		int index = (int)((dimensions+1)*(dimensions/2));
-		for (int x = 0; x < locArray.length; x++) {
-			System.out.println(index);
-			locArray[x] = index;
-		}
-		validMoveLocation = new Location(locArray);
+		validMoveLocation = getStartingMoveLocation();
 		updatedLocations = new HashMap<Location, Integer>();
 		scores = new int[2];
+	}
+	
+	public GameBoard getMainBoard() {
+		return mainBoard;
 	}
 	
 	public boolean isValidMove(Location loc) {
@@ -85,6 +83,15 @@ public class GameLogic {
 		return validMoveLocation;
 	}
 	
+	private Location getStartingMoveLocation() {
+		int[] locArray = new int[levels-1];
+		int index = (int)((dimensions+1)*(dimensions/2));
+		for (int x = 0; x < locArray.length; x++) {
+			locArray[x] = index;
+		}
+		return new Location(locArray);
+	}
+	
 	/**
 	 * Returns the specified player's current score.
 	 */
@@ -98,6 +105,13 @@ public class GameLogic {
 	 */
 	public void restart() {
 		mainBoard = new GameBoard(levels, dimensions);
+		clearUpdates();
+		currentPlayer = Tile.X;
+		validMoveLocation = getStartingMoveLocation();
+	}
+	
+	public void resetScores() {
+		scores = new int[2];
 	}
 	
 	/**

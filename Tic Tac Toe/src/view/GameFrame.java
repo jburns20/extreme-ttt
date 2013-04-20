@@ -14,6 +14,8 @@ public class GameFrame extends JFrame implements ActionListener, MouseListener {
 	private EntireGridPanel gridPanel;
 	static int levels;
 	static int dimensions;
+	private JLabel scoreLabel1;
+	private JLabel scoreLabel2;
 	
 	/**
 	 * Constructs a new GameFrame object with the specified number of levels, dimensions, and player names.
@@ -28,7 +30,13 @@ public class GameFrame extends JFrame implements ActionListener, MouseListener {
 				//controlPanel.setSize(gamePanel.getWidth(), 50);
 				//controlPanel.setLocation(0, 0);
 				JPanel leftPlayerPanel = new JPanel();
-				leftPlayerPanel.add(new JLabel(playerNames[0]));
+				leftPlayerPanel.setLayout(new GridLayout(2,1));
+				JLabel playerLabel1 = new JLabel(playerNames[0]);
+				playerLabel1.setHorizontalAlignment(SwingConstants.CENTER);
+				leftPlayerPanel.add(playerLabel1);
+				scoreLabel1 = new JLabel("0");
+				scoreLabel1.setHorizontalAlignment(SwingConstants.CENTER);
+				leftPlayerPanel.add(scoreLabel1);
 				controlPanel.add(leftPlayerPanel);
 				JPanel controlButtonsPanel = new JPanel(); // {
 					controlButtonsPanel.setLayout(new GridLayout(2,1));
@@ -43,7 +51,13 @@ public class GameFrame extends JFrame implements ActionListener, MouseListener {
 			//  }
 				controlPanel.add(controlButtonsPanel);
 				JPanel rightPlayerPanel = new JPanel();
-					rightPlayerPanel.add(new JLabel(playerNames[1]));
+				rightPlayerPanel.setLayout(new GridLayout(2,1));
+				JLabel playerLabel2 = new JLabel(playerNames[1]);
+				playerLabel2.setHorizontalAlignment(SwingConstants.CENTER);
+				rightPlayerPanel.add(playerLabel2);
+				scoreLabel2 = new JLabel("0");
+				scoreLabel2.setHorizontalAlignment(SwingConstants.CENTER);
+				rightPlayerPanel.add(scoreLabel2);
 				controlPanel.add(rightPlayerPanel);
 			//  }
 				gamePanel.add(controlPanel, BorderLayout.NORTH);
@@ -65,6 +79,26 @@ public class GameFrame extends JFrame implements ActionListener, MouseListener {
 		for (Location loc : locs.keySet()) {
 			gridPanel.setValue(loc, locs.get(loc));
 		}
+	}
+	
+	public void updateScores(int score1, int score2) {
+		scoreLabel1.setText(""+score1);
+		scoreLabel2.setText(""+score2);
+		scoreLabel1.repaint();
+		scoreLabel2.repaint();
+	}
+	
+	public void clearBoard() {
+		getContentPane().remove(gridPanel);
+		gridPanel = new EntireGridPanel(levels, dimensions);
+		gridPanel.addMouseListener(this);
+		getContentPane().add(gridPanel, BorderLayout.CENTER);
+		getContentPane().invalidate();
+		getContentPane().validate();
+	}
+	
+	public void gameIsOver(int winner) {
+		gridPanel.removeMouseListener(this);
 	}
 	
 	public void setValidLocation(Location loc) {
@@ -112,7 +146,7 @@ public class GameFrame extends JFrame implements ActionListener, MouseListener {
 			y -= tileHeight*row;
 			locArray[i] = dimensions*row + col;
 		}
-		delegate.locationClicked(new Location(locArray));
+		if (delegate != null) delegate.locationClicked(new Location(locArray));
 	}
 	public void mouseReleased(MouseEvent e) { }
 }
