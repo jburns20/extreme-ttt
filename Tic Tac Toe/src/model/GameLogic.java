@@ -53,7 +53,7 @@ public class GameLogic {
 			updatedLocations.putAll(mainBoard.setValue(loc,loc,currentPlayer));
 			this.setValidMoveLocation(loc.sublocation(1));
 			
-			System.out.println(mainBoard.getValue());
+			//System.out.println(mainBoard.getValue());
 		
 			if (specialCaseWin() && mainBoard.getValue() == Tile.EMPTY) {
 				mainBoard.setValue(currentPlayer);

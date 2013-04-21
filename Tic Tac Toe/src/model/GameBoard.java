@@ -50,7 +50,7 @@ public class GameBoard extends Tile {
 		int newval = this.updateValue(player);
 		if (newval > 0) {
 			this.setValue(newval);
-			System.out.println(this.getValue());
+			//System.out.println(this.getValue());
 			map.put(fullLocation.sublocation(0,fullLocation.numValues()-relLoc.numValues()), newval);
 		}
 		return map;

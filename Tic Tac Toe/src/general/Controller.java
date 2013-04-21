@@ -15,6 +15,7 @@ import model.RandomAI;
 public class Controller implements GameViewDelegate {
 	private AI[] players;
 	private String[] playerNames;
+	private Timer[] timers;
 	private GameLogic logic;
 	private GameFrame frame;
 	private boolean humanMovesAllowed;
@@ -81,6 +82,7 @@ public class Controller implements GameViewDelegate {
 			}
 		}
 		playerNames = new String[] {"Player 1", "Player 2"};
+		timers = new Timer[2];
 		humanMovesAllowed = true;
 		
 		//Start the match
@@ -107,7 +109,7 @@ public class Controller implements GameViewDelegate {
 	 * Creates and starts two repeating timers, one for each AI, in an AI vs. AI game.
 	 */
 	private void startAITimers() {
-		Timer player0Timer = new Timer(2000, new ActionListener() {  
+		timers[0] = new Timer(2000, new ActionListener() {  
 			//Fancy anonymous inner classes for listeners (copying Android design pattern)
 			public void actionPerformed(ActionEvent evt) {
 				if (logic.getMainBoardState() != 0 || makeAIMove(players[0])) {
@@ -115,17 +117,17 @@ public class Controller implements GameViewDelegate {
 				}
 			}
 		});
-		player0Timer.setInitialDelay(1000);
-		Timer player1Timer = new Timer(2000, new ActionListener() {
+		timers[0].setInitialDelay(1000);
+		timers[1] = new Timer(2000, new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				if (logic.getMainBoardState() != 0 || makeAIMove(players[1])) {
 					((Timer)evt.getSource()).stop();
 				}
 			}
 		});
-		player1Timer.setInitialDelay(2000);
-		player0Timer.start();
-		player1Timer.start();
+		timers[1].setInitialDelay(2000);
+		timers[0].start();
+		timers[1].start();
 	}
 	
 	/**
@@ -134,7 +136,6 @@ public class Controller implements GameViewDelegate {
 	private void win() {
 		humanMovesAllowed = false;
 		int winner = logic.getMainBoardState();
-		System.out.println();
 		String wintext;
 		if (winner != 3) {
 			wintext = playerNames[winner-1] + " wins!";
@@ -213,8 +214,11 @@ public class Controller implements GameViewDelegate {
 		frame.clearBoard();
 		frame.setValidLocation(logic.getValidMoveLocation());
 		if (players[0] != null) {
+			timers[0].stop();
+			timers[1].stop();
 			humanMovesAllowed = false;
 			startAITimers();
 		}
+		
 	}
 }
