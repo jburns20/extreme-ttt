@@ -44,15 +44,14 @@ public class GameBoard extends Tile {
 			map = new HashMap<Location, Integer>();
 			board[relLoc.get(0)].setValue(player);
 			map.put(fullLocation, player);
-			System.out.println("1 "+fullLocation+" "+player);
 		} else {
 			map = ((GameBoard)board[relLoc.get(0)]).setValue(fullLocation,relLoc.sublocation(1),player);
 		}
 		int newval = this.updateValue(player);
 		if (newval > 0) {
 			this.setValue(newval);
+			System.out.println(this.getValue());
 			map.put(fullLocation.sublocation(0,fullLocation.numValues()-relLoc.numValues()), newval);
-			System.out.println("2 "+fullLocation.sublocation(0,fullLocation.numValues()-relLoc.numValues())+" "+player);
 		}
 		return map;
 	}
@@ -62,7 +61,6 @@ public class GameBoard extends Tile {
 	 * Returns this board's new value.
 	 */
 	private int updateValue(int player) {
-		System.out.println("VALUE: "+this.getValue());
 		if (this.getValue() != Tile.EMPTY) {return this.getValue();}
 		boolean win = true; // must assume that a win took place, each for loop is designed to see if a win was NOT achieved
 		for (int index = 0; index < dimensions*dimensions; index+=(dimensions+1)) {

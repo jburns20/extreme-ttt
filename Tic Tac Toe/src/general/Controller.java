@@ -134,6 +134,7 @@ public class Controller implements GameViewDelegate {
 	private void win() {
 		humanMovesAllowed = false;
 		int winner = logic.getMainBoardState();
+		System.out.println();
 		String wintext;
 		if (winner != 3) {
 			wintext = playerNames[winner-1] + " wins!";
