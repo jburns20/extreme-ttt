@@ -30,7 +30,8 @@ public class Controller implements GameViewDelegate {
 	 * Constructs a new controller object that makes a new game.
 	 */
 	public Controller() {
-		JFrame frame = new JFrame();
+		JFrame frame = new JFrame(); //dummy object for passing into input dialogs for some reason
+		//Ask user for number of levels
 		Integer levels = (Integer)JOptionPane.showInputDialog(frame,
 				"Choose the number of levels", 
 				"Extreme Tic-Tac-Toe",
@@ -39,6 +40,8 @@ public class Controller implements GameViewDelegate {
 				new Integer[] {1,2,3},
 				1);
 		if (levels == null) System.exit(0);
+		
+		//Compute possible dimensions based on number of levels chosen
 		int numPossible;
 		if (levels==1) numPossible = 38;
 		else if (levels==2) numPossible = 6;
@@ -47,6 +50,8 @@ public class Controller implements GameViewDelegate {
 		for (int i=0; i<numPossible; i++) {
 			possibleDimensions[i] = i+3;
 		}
+		
+		//Ask user for grid dimensions
 		Integer dimensions = (Integer)JOptionPane.showInputDialog(frame,
 				"Choose the dimensions of each grid", 
 				"Extreme Tic-Tac-Toe",
@@ -55,6 +60,8 @@ public class Controller implements GameViewDelegate {
 				possibleDimensions,
 				3);
 		if (dimensions == null) System.exit(0);
+		
+		//Ask user for number of human players
 		Integer numHumans = (Integer)JOptionPane.showInputDialog(frame,
 				"Choose the number human players", 
 				"Extreme Tic-Tac-Toe",
@@ -63,6 +70,8 @@ public class Controller implements GameViewDelegate {
 				new Integer[] {0,1,2},
 				2);
 		if (numHumans == null) System.exit(0);
+		
+		//Initialize the AI (if any)
 		players = new AI[2];
 		for (int i=0; i<2; i++) {
 			if (numHumans == 0) {
@@ -73,25 +82,33 @@ public class Controller implements GameViewDelegate {
 		}
 		playerNames = new String[] {"Player 1", "Player 2"};
 		humanMovesAllowed = true;
+		
+		//Start the match
 		startNewMatch(levels,dimensions);
 	}
 	
 	/**
-	 * Starts a new match by creating a new game window.
+	 * Starts a new match by creating a new game frame and logic.
 	 */
 	public void startNewMatch(int levels, int dimensions) {
 		frame = new GameFrame(levels, dimensions, new String[] {"Player 1", "Player 2"});
 		frame.setDelegate(this);
 		logic = new GameLogic(levels, dimensions);
 		frame.setValidLocation(logic.getValidMoveLocation());
+		
+		//If AI vs. AI, pit them against each other with timers
 		if (players[0] != null) {
 			humanMovesAllowed = false;
 			startAITimers();
 		}
 	}
 	
+	/**
+	 * Creates and starts two repeating timers, one for each AI, in an AI vs. AI game.
+	 */
 	private void startAITimers() {
-		Timer player0Timer = new Timer(2000, new ActionListener() {
+		Timer player0Timer = new Timer(2000, new ActionListener() {  
+			//Fancy anonymous inner classes for listeners (copying Android design pattern)
 			public void actionPerformed(ActionEvent evt) {
 				if (logic.getMainBoardState() != 0 || makeAIMove(players[0])) {
 					((Timer)evt.getSource()).stop();
@@ -111,8 +128,11 @@ public class Controller implements GameViewDelegate {
 		player1Timer.start();
 	}
 	
+	/**
+	 * Announces that there was a winner, asking the user if they want to play again.
+	 */
 	private void win() {
-		frame.gameIsOver(logic.getMainBoardState());
+		humanMovesAllowed = false;
 		int winner = logic.getMainBoardState();
 		String wintext;
 		if (winner != 3) {
@@ -131,7 +151,7 @@ public class Controller implements GameViewDelegate {
 	}
 	
 	/**
-	 * Makes a move with the given AI.
+	 * Makes a move with the given AI. Returns whether the move caused a win or not.
 	 */
 	private boolean makeAIMove(AI ai) {
 		Location loc = ai.getMove(logic.getMainBoard(), logic.getValidMoveLocation());
@@ -159,6 +179,7 @@ public class Controller implements GameViewDelegate {
 			if (logic.getMainBoardState() > 0) {
 				win();
 			} else if (players[1] != null) {
+				//If a human vs. AI game, set a timer for the AI to move one second from now (while preventing the user from moving until that happens)
 				humanMovesAllowed = false;
 				new Timer(1000, new ActionListener() {
 					public void actionPerformed(ActionEvent evt) {
@@ -186,10 +207,12 @@ public class Controller implements GameViewDelegate {
 	}
 
 	public void restartClicked() {
+		humanMovesAllowed = true;
 		logic.restart();
 		frame.clearBoard();
 		frame.setValidLocation(logic.getValidMoveLocation());
 		if (players[0] != null) {
+			humanMovesAllowed = false;
 			startAITimers();
 		}
 	}

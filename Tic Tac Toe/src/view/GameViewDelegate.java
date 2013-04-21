@@ -12,7 +12,7 @@ public interface GameViewDelegate {
 	public void locationClicked(Location loc);
 	
 	/**
-	 * Informs the controller of the user's intention to reset the match.
+	 * Informs the controller of the user's intention to reset the scores.
 	 */
 	public void resetClicked();
 	

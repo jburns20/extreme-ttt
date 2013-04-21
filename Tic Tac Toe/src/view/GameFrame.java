@@ -23,12 +23,13 @@ public class GameFrame extends JFrame implements ActionListener, MouseListener {
 	public GameFrame(int levels, int dimensions, String[] playerNames) {
 		GameFrame.levels = levels;
         GameFrame.dimensions = dimensions;
-        Container gamePanel = getContentPane(); // {
-			gamePanel.setLayout(new BorderLayout());
-			JPanel controlPanel = new JPanel(); // {
-				controlPanel.setLayout(new GridLayout(1,3));
-				//controlPanel.setSize(gamePanel.getWidth(), 50);
-				//controlPanel.setLocation(0, 0);
+        //Initialize the Game Panel (content pane)
+        Container gamePanel = getContentPane();
+		gamePanel.setLayout(new BorderLayout());
+		//Initialize the Control Panel {
+			JPanel controlPanel = new JPanel();
+			controlPanel.setLayout(new GridLayout(1,3));
+			//Initialize the Left Player Panel {
 				JPanel leftPlayerPanel = new JPanel();
 				leftPlayerPanel.setLayout(new GridLayout(2,1));
 				JLabel playerLabel1 = new JLabel(playerNames[0]);
@@ -37,19 +38,22 @@ public class GameFrame extends JFrame implements ActionListener, MouseListener {
 				scoreLabel1 = new JLabel("0");
 				scoreLabel1.setHorizontalAlignment(SwingConstants.CENTER);
 				leftPlayerPanel.add(scoreLabel1);
-				controlPanel.add(leftPlayerPanel);
-				JPanel controlButtonsPanel = new JPanel(); // {
-					controlButtonsPanel.setLayout(new GridLayout(2,1));
-					JButton resetButton = new JButton("Reset Scores");
-					JButton restartButton = new JButton("Restart Game");
-					resetButton.addActionListener(this);
-					resetButton.setActionCommand("reset");
-					restartButton.addActionListener(this);
-					restartButton.setActionCommand("restart");
-					controlButtonsPanel.add(resetButton);
-					controlButtonsPanel.add(restartButton);
-			//  }
-				controlPanel.add(controlButtonsPanel);
+		//  }
+			controlPanel.add(leftPlayerPanel);
+			//Initialize the Control Buttons Panel {
+				JPanel controlButtonsPanel = new JPanel();
+				controlButtonsPanel.setLayout(new GridLayout(2,1));
+				JButton resetButton = new JButton("Reset Scores");
+				JButton restartButton = new JButton("Restart Game");
+				resetButton.addActionListener(this);
+				resetButton.setActionCommand("reset");
+				restartButton.addActionListener(this);
+				restartButton.setActionCommand("restart");
+				controlButtonsPanel.add(resetButton);
+				controlButtonsPanel.add(restartButton);
+		//  }
+			controlPanel.add(controlButtonsPanel);
+			//Initialize the Right Player Panel {
 				JPanel rightPlayerPanel = new JPanel();
 				rightPlayerPanel.setLayout(new GridLayout(2,1));
 				JLabel playerLabel2 = new JLabel(playerNames[1]);
@@ -58,13 +62,15 @@ public class GameFrame extends JFrame implements ActionListener, MouseListener {
 				scoreLabel2 = new JLabel("0");
 				scoreLabel2.setHorizontalAlignment(SwingConstants.CENTER);
 				rightPlayerPanel.add(scoreLabel2);
-				controlPanel.add(rightPlayerPanel);
-			//  }
-				gamePanel.add(controlPanel, BorderLayout.NORTH);
-				//TilePanel gridPanel = new TilePanel(new Location(new int[] {}), levels, dimensions, this);
-				gridPanel = new EntireGridPanel(levels, dimensions);
-				gridPanel.addMouseListener(this);
-				gamePanel.add(gridPanel, BorderLayout.CENTER);
+		//  }
+			controlPanel.add(rightPlayerPanel);
+	//  }
+		gamePanel.add(controlPanel, BorderLayout.NORTH);
+		//Initialize the Grid Panel {
+			gridPanel = new EntireGridPanel(levels, dimensions);
+			gridPanel.addMouseListener(this);
+	//  }
+		gamePanel.add(gridPanel, BorderLayout.CENTER);
 		this.setSize(500,500);
 		this.setMinimumSize(new Dimension(250,300));
 		this.setVisible(true);
@@ -81,6 +87,9 @@ public class GameFrame extends JFrame implements ActionListener, MouseListener {
 		}
 	}
 	
+	/**
+	 * Updates the score text for both players to the specified values.
+	 */
 	public void updateScores(int score1, int score2) {
 		scoreLabel1.setText(""+score1);
 		scoreLabel2.setText(""+score2);
@@ -88,6 +97,9 @@ public class GameFrame extends JFrame implements ActionListener, MouseListener {
 		scoreLabel2.repaint();
 	}
 	
+	/**
+	 * Deletes the current grid and replaces it with a new one.
+	 */
 	public void clearBoard() {
 		getContentPane().remove(gridPanel);
 		gridPanel = new EntireGridPanel(levels, dimensions);
@@ -97,10 +109,9 @@ public class GameFrame extends JFrame implements ActionListener, MouseListener {
 		getContentPane().validate();
 	}
 	
-	public void gameIsOver(int winner) {
-		gridPanel.removeMouseListener(this);
-	}
-	
+	/**
+	 * Sets the view's representation of the valid move location to the specified location.
+	 */
 	public void setValidLocation(Location loc) {
 		gridPanel.setValidLocation(loc);
 	}
@@ -125,12 +136,14 @@ public class GameFrame extends JFrame implements ActionListener, MouseListener {
 	}
 
 	/**
-	 * Responds to mouse events on the game panel.
+	 * Methods implementing the MouseListener interface
 	 */
-	public void mouseClicked(MouseEvent e) { }
-	public void mouseEntered(MouseEvent e) { }
-	public void mouseExited(MouseEvent e) { }
+	
+	/**
+	 * Responds to clicks by determining the location of the click and informing the controller that that location was clicked.
+	 */
 	public void mousePressed(MouseEvent e) {
+		//Fancy math to determine which square the user clicked on
 		Point p = e.getPoint();
 		int x = p.x;
 		int y = p.y;
@@ -146,7 +159,12 @@ public class GameFrame extends JFrame implements ActionListener, MouseListener {
 			y -= tileHeight*row;
 			locArray[i] = dimensions*row + col;
 		}
+		//Inform the delegate that the user clicked on the calculated location
 		if (delegate != null) delegate.locationClicked(new Location(locArray));
 	}
+	
+	public void mouseClicked(MouseEvent e) { }
+	public void mouseEntered(MouseEvent e) { }
+	public void mouseExited(MouseEvent e) { }
 	public void mouseReleased(MouseEvent e) { }
 }
