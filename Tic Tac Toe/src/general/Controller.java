@@ -19,6 +19,7 @@ public class Controller implements GameViewDelegate {
 	private GameLogic logic;
 	private GameFrame frame;
 	private boolean humanMovesAllowed;
+	private Thread backgroundMusic;
 	
 	/**
 	 * The main method of the program.
@@ -93,6 +94,15 @@ public class Controller implements GameViewDelegate {
 	 * Starts a new match by creating a new game frame and logic.
 	 */
 	public void startNewMatch(int levels, int dimensions) {
+		backgroundMusic = new Thread(new Runnable() {
+			public void run() {
+				new EasySound("beginning.wav").play();
+				while (true) {
+					new EasySound("background.wav").play();
+				}
+			}
+		});
+		backgroundMusic.start();
 		frame = new GameFrame(levels, dimensions, new String[] {"Player 1", "Player 2"});
 		frame.setDelegate(this);
 		logic = new GameLogic(levels, dimensions);
@@ -109,7 +119,7 @@ public class Controller implements GameViewDelegate {
 	 * Creates and starts two repeating timers, one for each AI, in an AI vs. AI game.
 	 */
 	private void startAITimers() {
-		timers[0] = new Timer(2000, new ActionListener() {  
+		timers[0] = new Timer(1000, new ActionListener() {  
 			//Fancy anonymous inner classes for listeners (copying Android design pattern)
 			public void actionPerformed(ActionEvent evt) {
 				if (logic.getMainBoardState() != 0 || makeAIMove(players[0])) {
@@ -117,15 +127,15 @@ public class Controller implements GameViewDelegate {
 				}
 			}
 		});
-		timers[0].setInitialDelay(1000);
-		timers[1] = new Timer(2000, new ActionListener() {
+		timers[0].setInitialDelay(500);
+		timers[1] = new Timer(1000, new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				if (logic.getMainBoardState() != 0 || makeAIMove(players[1])) {
 					((Timer)evt.getSource()).stop();
 				}
 			}
 		});
-		timers[1].setInitialDelay(2000);
+		timers[1].setInitialDelay(1000);
 		timers[0].start();
 		timers[1].start();
 	}
@@ -134,6 +144,10 @@ public class Controller implements GameViewDelegate {
 	 * Announces that there was a winner, asking the user if they want to play again.
 	 */
 	private void win() {
+		backgroundMusic.stop();
+		new Thread(new Runnable() {
+			public void run() { new EasySound("victory.wav").play(); }
+		}).start();
 		humanMovesAllowed = false;
 		int winner = logic.getMainBoardState();
 		String wintext;
@@ -156,6 +170,9 @@ public class Controller implements GameViewDelegate {
 	 * Makes a move with the given AI. Returns whether the move caused a win or not.
 	 */
 	private boolean makeAIMove(AI ai) {
+		new Thread(new Runnable() {
+			public void run() { new EasySound("ping.wav").play(); }
+		}).start();
 		Location loc = ai.getMove(logic.getMainBoard(), logic.getValidMoveLocation());
 		logic.takeTurn(loc);
 		frame.updateLocations(logic.getUpdatedLocations());
@@ -174,6 +191,9 @@ public class Controller implements GameViewDelegate {
 	 */
 	private void makeHumanMove(Location loc) {
 		if (logic.takeTurn(loc)) {
+			new Thread(new Runnable() {
+				public void run() { new EasySound("ping.wav").play(); }
+			}).start();
 			frame.updateLocations(logic.getUpdatedLocations());
 			logic.clearUpdates();
 			frame.setValidLocation(logic.getValidMoveLocation());
@@ -209,6 +229,16 @@ public class Controller implements GameViewDelegate {
 	}
 
 	public void restartClicked() {
+		backgroundMusic.stop();
+		backgroundMusic = new Thread(new Runnable() {
+			public void run() {
+				new EasySound("beginning.wav").play();
+				while (true) {
+					new EasySound("background.wav").play();
+				}
+			}
+		});
+		backgroundMusic.start();
 		humanMovesAllowed = true;
 		logic.restart();
 		frame.clearBoard();
