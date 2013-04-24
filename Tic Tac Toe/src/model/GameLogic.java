@@ -36,7 +36,7 @@ public class GameLogic {
 	}
 	
 	public boolean specialCaseWin() {
-		for (int x = 0; x < 9; x++) {
+		for (int x = 0; x < dimensions*dimensions; x++) {
 			if (mainBoard.getValue(new Location(validMoveLocation, x)) == Tile.EMPTY) {
 				return false;
 			}
